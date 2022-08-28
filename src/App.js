@@ -1,25 +1,35 @@
-import logo from './logo.svg';
+import React, {useState} from 'react';
+import axios from 'axios';
 import './App.css';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+const [image, setImage] = useState('');
+
+const handleChange = () => {
+
+
+axios.get('https://api.generated.photos/api/v1/faces?api_key=dn4E0zwmYenUC-GsY7dtsQ&order_by=random')
+
+.then(res=>{
+  const uri =res.data.faces[0].urls[4][512]; 
+  uri && setImage (uri)
+
+  })
+  .catch(err=>{
+    console.log(err.message);
+});
 }
+return (
+  <div className='App'>
+   <h1>AI Photo Generator</h1>
+   {image && <img src={image} alt= "AI Face" />}
+   <button type='button' onClick={handleChange}>
+    New Image
+   </button>
+ </div>
+);
+}
+
 
 export default App;
